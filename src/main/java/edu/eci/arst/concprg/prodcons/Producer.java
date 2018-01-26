@@ -33,17 +33,30 @@ public class Producer extends Thread {
         
             while (true) {
                 //System.out.println(queue.size());
-                dataSeed = dataSeed + rand.nextInt(100);
-                System.out.println("Producer added " + dataSeed);
-                queue.add(dataSeed);
-                synchronized(queue){
-                    queue.notifyAll();
+                if(queue.size()<stockLimit){
+                    dataSeed = dataSeed + rand.nextInt(100);
+                    System.out.println("Producer added " + dataSeed);
+                    queue.add(dataSeed);
+                    synchronized(queue){
+                        queue.notifyAll();
+                    }
                 }
-                    try {
+                else{
+                    synchronized(queue){
+                        try {
+                            queue.wait();
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(Producer.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+                
+                /*try {
                         Thread.sleep(1000);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(Producer.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    }*/
+                    
                 
             }
         

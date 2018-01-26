@@ -29,7 +29,15 @@ public class Consumer extends Thread{
                 //System.out.println(queue.size());
                 if (queue.size() > 0) {
                     int elem=queue.poll();
+                    synchronized(queue){
+                        queue.notify();
+                    }
                     System.out.println("Consumer consumes "+elem);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Producer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
                 else{
                     synchronized(queue){
