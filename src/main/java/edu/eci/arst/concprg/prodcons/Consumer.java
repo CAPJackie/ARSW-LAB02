@@ -5,7 +5,10 @@
  */
 package edu.eci.arst.concprg.prodcons;
 
+import java.util.NoSuchElementException;
 import java.util.Queue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -21,14 +24,26 @@ public class Consumer extends Thread{
     }
     
     @Override
-    public void run() {
-        while (true) {
+    public void run() {        
+            while (true) {
+                //System.out.println(queue.size());
+                if (queue.size() > 0) {
+                    int elem=queue.poll();
+                    System.out.println("Consumer consumes "+elem);
+                }
+                else{
+                    synchronized(queue){
+                        try {                           
+                            queue.wait();
 
-            if (queue.size() > 0) {
-                int elem=queue.poll();
-                System.out.println("Consumer consumes "+elem);                                
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(Consumer.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+                
+                    
             }
-            
         }
     }
-}
+
