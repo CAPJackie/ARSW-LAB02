@@ -1,0 +1,5 @@
+Claramente hay una condicion de carrera ya que
+puede pasar que dos inmortales intenten acceder
+al mismo inmmortal (por ejemplo, que al remover al inmortal
+del juego exista un inmortal que lo haya seleccionado como
+objetivo para pelear).
